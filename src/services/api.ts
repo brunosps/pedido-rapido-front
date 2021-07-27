@@ -15,9 +15,8 @@ api.interceptors.response.use(res => {
             'token-type': res.headers['token-type'],
             uid: res.headers.uid
         };
-
         api.defaults.headers = apiData;
-        Cookie.set('@api-data', apiData);
+        window.sessionStorage.setItem('@api-data', JSON.stringify(apiData));
     }
 
     return res;
@@ -25,15 +24,17 @@ api.interceptors.response.use(res => {
 
 
 api.interceptors.request.use(req => {
-    if (req.url?.includes('admin')) {
-        const apiData: ApiData = JSON.parse(Cookie.getJSON('@api-data'));
+    debugger;
+    const url = req.url || ""
+    if (url !== "/auth/v1/employee/sign_in") {
+        const cookieGet = window.sessionStorage.getItem('@api-data') || "{}"
+        const apiData: ApiData = JSON.parse(cookieGet)
         req.headers = apiData;
     }
 
     return req;
-})
-
-
+}
+)
 
 export default api
 
