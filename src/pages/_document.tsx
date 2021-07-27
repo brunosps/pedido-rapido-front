@@ -10,7 +10,6 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <title>Pedido Pronto.</title>
                     <link rel="shortcut icon" href="/favicon.png" />
 
                     <link rel="preconnect" href="https://fonts.googleapis.com" />
