@@ -1,5 +1,9 @@
 import { createContext, ReactNode } from "react";
 import api from "../services/api";
+import { useRouter } from 'next/router';
+import Employee from "../dtos/Employee";
+import { useDispatch } from "react-redux";
+import { setLoggedEmployee } from "../store/modules/auth/reducer";
 
 type SignInCredentials = {
     email: string
@@ -20,14 +24,26 @@ export const AuthContext = createContext({} as AuthContextData)
 export function AuthProvider({ children }: AuthProviderProps) {
     const isAuthenticated = false
 
+    const router = useRouter();
+    const dispatch = useDispatch();
+
     async function signIn({ email, password }: SignInCredentials) {
         try {
-            const response = api.post('/auth/v1/employee/sign_in', {
+            const auth = await api.post('/auth/v1/employee/sign_in', {
                 email,
                 password,
-            }).then(response => {
-                console.log(response.headers)
             })
+
+            const employee = auth.data.data;
+
+            dispatch(setLoggedEmployee(employee));
+
+            if (router.query.callback && router.query.callback !== "/") {
+                router.push(decodeURIComponent(router.query.callback.toString()));
+            } else {
+                // router.push(employee.occupation === 'admin' ? '/Admin' : '/')
+                router.push('/')
+            }
         } catch (err) {
             console.log(err)
         }

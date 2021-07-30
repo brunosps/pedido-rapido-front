@@ -1,84 +1,35 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { Flex, Button, Stack } from '@chakra-ui/react'
-import { Input } from '../components/Form/input'
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
 
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import withAuth from '../components/withAuth';
+import AuthState from '../dtos/AuthState';
+import Employee from '../dtos/Employee';
 
-type SignInFormData = {
-  email: string,
-  password: string,
-}
+function Home() {
+  const loggedEmployee: Employee = useSelector((state: AuthState) => state.auth.loggedEmployee);
 
-const signInFormSchema = yup.object().shape({
-  email: yup.string().required('E-Mail Obrigatório').email('E-Mail Inválido'),
-  password: yup.string().required('Senha Obrigatório'),
-})
+  const router = useRouter();
 
-
-
-export default function Sign() {
-  const { signIn } = useContext(AuthContext)
-  const { register, handleSubmit, formState, errors } = useForm({
-    resolver: yupResolver(signInFormSchema),
-  })
-
-  const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
-    await signIn(values)
+  if (loggedEmployee) {
+    let employeePath = "/Admin";
+    switch (loggedEmployee.occupation) {
+      case "waiter": {
+        //statements; 
+        employeePath = "/Attendance";
+        break;
+      }
+      default: {
+        //statements; 
+        let employeePath = "/Kitchen";
+        break;
+      }
+    }
+    router.push(employeePath);
   }
 
   return (
-    <Flex
-      w='100vw'
-      h='100vh'
-      align='center'
-      justify='center'
-    >
-
-      <Flex
-        as='form'
-        w='100%'
-        maxW={360}
-        bg='gray.300'
-        p='8'
-        borderRadius={8}
-        flexDir='column'
-        onSubmit={handleSubmit(handleSignIn)}
-      >
-
-        <Stack spacing='4'>
-          <Input
-            type='email'
-            name='email'
-            label='E-Mail'
-            error={errors.email}
-            ref={register}
-          />
-          <Input
-            type='password'
-            name='password'
-            label='Senha'
-            error={errors.password}
-            ref={register} />
-        </Stack>
-
-
-        <Button
-          type='submit'
-          mt='6'
-          colorScheme='yellow'
-          size='lg'
-          isLoading={formState.isSubmitting}
-        >
-          Entrar
-        </Button>
-
-
-      </Flex>
-    </Flex>
+    <h1>Home {loggedEmployee.email}</h1>
   )
 }
+
+export default withAuth(Home);

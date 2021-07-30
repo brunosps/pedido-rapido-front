@@ -1,9 +1,8 @@
 import axios from 'axios';
-import Cookie from 'js-cookie'
-import ApiData from '../dtos/apiData'
-
+import ApiData from '../dtos/ApiData'
+import { getCredential, setCredential } from './credentials';
 const api = axios.create({
-    baseURL: 'http://localhost:4000',
+    baseURL: 'http://127.0.0.1:4000',
 })
 
 api.interceptors.response.use(res => {
@@ -16,7 +15,7 @@ api.interceptors.response.use(res => {
             uid: res.headers.uid
         };
         api.defaults.headers = apiData;
-        window.sessionStorage.setItem('@api-data', JSON.stringify(apiData));
+        setCredential(apiData);
     }
 
     return res;
@@ -24,12 +23,9 @@ api.interceptors.response.use(res => {
 
 
 api.interceptors.request.use(req => {
-    debugger;
     const url = req.url || ""
     if (url !== "/auth/v1/employee/sign_in") {
-        const cookieGet = window.sessionStorage.getItem('@api-data') || "{}"
-        const apiData: ApiData = JSON.parse(cookieGet)
-        req.headers = apiData;
+        req.headers = getCredential();
     }
 
     return req;
