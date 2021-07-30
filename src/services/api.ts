@@ -33,4 +33,3 @@ api.interceptors.request.use(req => {
 )
 
 export default api
-

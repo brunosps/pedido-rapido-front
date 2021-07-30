@@ -15,7 +15,7 @@ export function Sidebar() {
                 </NavSection>
 
                 <NavSection title='ADMIN'>
-                    <NavLink icon={RiUser3Line} href='/users'>Usuários</NavLink>
+                    <NavLink icon={RiUser3Line} href='/users'>Funcionários</NavLink>
                 </NavSection>
 
                 <NavSection title='COZINHA'>

@@ -1,196 +1,124 @@
-import { Text, Box, Flex, Heading, Button, Icon, Table, Thead, Tr, Td, Th, Checkbox, Tbody } from "@chakra-ui/react";
+import { Text, Box, Flex, Heading, Button, Icon, Table, Thead, Tr, Td, Th, Tbody, Spinner } from "@chakra-ui/react";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { RiAddLine, RiCloseCircleFill } from 'react-icons/ri'
+import { HiOutlineUsers } from "react-icons/hi";
 import { Pagination } from "../../components/Pagination";
 import Link from "next/link";
+import { FaUsersCog } from "react-icons/fa";
+import { useUsers } from "../../services/hooks/useUsers";
+import employee from "../../components/dtos/employee";
+
 
 
 export default function UserList() {
+    const { data, isLoading, error, isFetching } = useUsers()
+
+
+
     return (
         <Box>
             <Header />
-
             <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
                 <Sidebar />
 
                 <Box flex='1' borderRadius='8' bg='gray.300' p='8'>
                     <Flex mb='8' justify='space-between' align='center'>
-                        <Heading size='lg' fontWeight='normal'>Usuários</Heading>
+                        <Heading size='lg' fontWeight='normal'>
+                            Funcionários
+                            {!isLoading && isFetching && <Spinner size='sm' color='gray.500' ml='4' />}
+                        </Heading>
 
                         <Link href='/users/create'>
                             <Button as='a' colorScheme='yellow' leftIcon={<Icon as={RiAddLine} fontSize='20' />} >
-                                Criar Novo
+                                Criar Novo Funcionário
                             </Button>
                         </Link>
                     </Flex>
-                    <Table colorScheme='black' >
-                        <Thead>
-                            <Tr>
-                                <Th px='6' color='gray.700' width='8' />
-                                <Th>Usuario</Th>
-                                <Th>Data de Cadastro</Th>
-                                <Th>Tipo</Th>
-                                <Th />
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            <Tr>
-                                <Td>
+                    {isLoading ? (
+                        <Flex justify='center'>
+                            <Spinner />
+                        </Flex>
 
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight='bold'>Vicenzo Giuseppe</Text>
-                                        <Text fontSize='sm' >vicenzogiuseppe@gmail.com</Text>
-                                    </Box>
-                                </Td>
-                                <Td>04 de Abril, 2021</Td>
-                                <Td>Admin</Td>
-                                <Td isNumeric>
-                                    <Button
-                                        as='a'
-                                        size='sm'
-                                        fontSize='sm'
-                                        colorScheme='red'
-                                        color='gray.700'
-                                        leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
-                                        disabled
-                                    >
-                                        Apagar
-                                    </Button>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
+                    ) : error ? (
 
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight='bold'>Vicenzo Giuseppe</Text>
-                                        <Text fontSize='sm' >vicenzogiuseppe@gmail.com</Text>
-                                    </Box>
-                                </Td>
-                                <Td>04 de Abril, 2021</Td>
-                                <Td>Cozinha</Td>
-                                <Td isNumeric>
-                                    <Button
-                                        as='a'
-                                        size='sm'
-                                        fontSize='sm'
-                                        colorScheme='red'
-                                        color='gray.700'
-                                        leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
-                                    >
-                                        Apagar
-                                    </Button>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
+                        <Flex justify='center'>
+                            <Text>Falha ao obter dados do funcionários.</Text>
+                        </Flex>
 
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight='bold'>Vicenzo Giuseppe</Text>
-                                        <Text fontSize='sm' >vicenzogiuseppe@gmail.com</Text>
-                                    </Box>
-                                </Td>
-                                <Td>04 de Abril, 2021</Td>
-                                <Td>Atendente</Td>
-                                <Td isNumeric>
-                                    <Button
-                                        as='a'
-                                        size='sm'
-                                        fontSize='sm'
-                                        colorScheme='red'
-                                        color='gray.700'
-                                        leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
-                                    >
-                                        Apagar
-                                    </Button>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
+                    ) : (
 
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight='bold'>Vicenzo Giuseppe</Text>
-                                        <Text fontSize='sm' >vicenzogiuseppe@gmail.com</Text>
-                                    </Box>
-                                </Td>
-                                <Td>04 de Abril, 2021</Td>
-                                <Td>Atendente</Td>
-                                <Td isNumeric>
-                                    <Button
-                                        as='a'
-                                        size='sm'
-                                        fontSize='sm'
-                                        colorScheme='red'
-                                        color='gray.700'
-                                        leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
-                                    >
-                                        Apagar
-                                    </Button>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
+                        <>
+                            <Table colorScheme='black' >
+                                <Thead>
+                                    <Tr>
+                                        <Th px='6' color='gray.700' width='8' />
+                                        <Th>Funcionario</Th>
+                                        <Th>Tipo</Th>
+                                        <Th />
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {
 
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight='bold'>Vicenzo Giuseppe</Text>
-                                        <Text fontSize='sm' >vicenzogiuseppe@gmail.com</Text>
-                                    </Box>
-                                </Td>
-                                <Td>04 de Abril, 2021</Td>
-                                <Td>Cozinha</Td>
-                                <Td isNumeric>
-                                    <Button
-                                        as='a'
-                                        size='sm'
-                                        fontSize='sm'
-                                        colorScheme='red'
-                                        color='gray.700'
-                                        leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
-                                    >
-                                        Apagar
-                                    </Button>
-                                </Td>
-                            </Tr>
-                            <Tr>
-                                <Td>
+                                        data?.map((employee: employee) => {
+                                            return (
 
-                                </Td>
-                                <Td>
-                                    <Box>
-                                        <Text fontWeight='bold'>Vicenzo Giuseppe</Text>
-                                        <Text fontSize='sm' >vicenzogiuseppe@gmail.com</Text>
-                                    </Box>
-                                </Td>
-                                <Td>04 de Abril, 2021</Td>
-                                <Td>Atendente</Td>
-                                <Td isNumeric>
-                                    <Button
-                                        as='a'
-                                        size='sm'
-                                        fontSize='sm'
-                                        colorScheme='red'
-                                        color='gray.700'
-                                        leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
-                                    >
-                                        Apagar
-                                    </Button>
-                                </Td>
-                            </Tr>
 
-                        </Tbody>
-                    </Table>
+                                                <Tr key={employee.id}>
 
-                    <Pagination />
+
+                                                    <Td>
+                                                        {employee.occupation === 'admin' ? (
+                                                            <Icon as={FaUsersCog} fontSize='35' justifyContent='center' />) : (
+                                                            <Icon as={HiOutlineUsers} fontSize='40' />
+                                                        )}
+
+                                                    </Td>
+                                                    <Td>
+                                                        <Box>
+                                                            <Text fontWeight='bold'>{employee.name}</Text>
+                                                            <Text fontSize='sm' >{employee.email}</Text>
+                                                        </Box>
+                                                    </Td>
+
+                                                    <Td>{employee.occupation}</Td>
+                                                    <Td isNumeric>
+                                                        {employee.occupation === 'admin' ? (<Button
+                                                            as='a'
+                                                            size='sm'
+                                                            fontSize='sm'
+                                                            colorScheme='red'
+                                                            color='gray.700'
+                                                            disabled
+                                                            leftIcon={<Icon as={RiCloseCircleFill} fontSize='20'
+
+                                                            />}
+                                                        >
+                                                            Apagar
+                                                        </Button>) : (
+                                                            <Button
+                                                                as='form'
+                                                                size='sm'
+                                                                fontSize='sm'
+                                                                colorScheme='red'
+                                                                color='gray.700'
+                                                                leftIcon={<Icon as={RiCloseCircleFill} fontSize='20' />}
+
+                                                            >
+                                                                Apagar
+                                                            </Button>
+                                                        )}
+                                                    </Td>
+                                                </Tr>
+
+                                            )
+                                        })}
+                                </Tbody>
+                            </Table>
+                            <Pagination />
+                        </>
+                    )}
                 </Box>
             </Flex>
 

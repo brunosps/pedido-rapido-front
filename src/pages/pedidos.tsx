@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Button, Icon, Table, Thead, Tr, Th, Checkbox, Tbody, Td, Text } from "@chakra-ui/react";
+import { Box, Flex, Table, Thead, Tr, Th, Tbody, Td, } from "@chakra-ui/react";
 import { Header } from '../components/Header'
 import { Sidebar } from '../components/Sidebar'
 

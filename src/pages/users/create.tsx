@@ -1,17 +1,22 @@
 import { Box, Flex, Heading, Divider, VStack, SimpleGrid, HStack, Button } from "@chakra-ui/react";
-import Link from "next/link";
 import { Input } from "../../components/Form/input";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, SubmitHandler } from 'react-hook-form'
+
 import * as yup from 'yup';
+import { Select } from "../../components/Form/select";
+import { RiCodeFill } from "react-icons/ri";
+import Router from "next/router";
+import api from "../../services/api";
 
 type CreateUserFormData = {
     name: string;
     email: string;
     password: string;
     password_confirmation: string;
+    occupation: string,
 }
 
 const createUserFormSchema = yup.object().shape({
@@ -21,9 +26,32 @@ const createUserFormSchema = yup.object().shape({
     password_confirmation: yup.string().oneOf([
         null, yup.ref('password')
     ], 'As senhas precisam ser iguais.'),
+    occupation: yup.string().required("Selecione uma opção")
 })
 
+
+
 export default function CreateUser() {
+
+    async function Create({ name, email, password, password_confirmation, occupation }: CreateUserFormData) {
+        try {
+            const response = api.post('/auth/v1/employee', {
+                name,
+                email,
+                password,
+                password_confirmation,
+                occupation
+            }).then(response => {
+                console.log(response)
+            })
+
+
+            Router.push('/users')
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const { register, handleSubmit, formState, errors } = useForm({
         resolver: yupResolver(createUserFormSchema)
     })
@@ -31,8 +59,10 @@ export default function CreateUser() {
     const handleCreateUser: SubmitHandler<CreateUserFormData> = async (values) => {
         await new Promise(resolve => setTimeout(resolve, 2000))
 
-        console.log(values)
+        Create(values)
     }
+
+
 
     return (
         <Box>
@@ -49,7 +79,7 @@ export default function CreateUser() {
                     p='8'
                     onSubmit={handleSubmit(handleCreateUser)}
                 >
-                    <Heading size='lg' fontWeight='normal'>Criar Usuários</Heading>
+                    <Heading size='lg' fontWeight='normal'>Funcionário</Heading>
 
                     <Divider my='6' borderColor='gray.700' />
 
@@ -85,6 +115,18 @@ export default function CreateUser() {
                                 error={errors.password_confirmation}
                                 ref={register} />
                         </SimpleGrid>
+
+                        <Select
+                            name='occupation'
+                            label='Ocupação'
+                            placeholder="Selecione: "
+                            ref={register}
+                            error={errors.occupation}
+                            icon={< RiCodeFill />}
+                        >
+                            <option value='waiter'>Atendente</option>
+                            <option value='cooker'>Cozinha</option>
+                        </Select>
                     </VStack>
 
                     <Flex mt='8' justify='flex-end'>
