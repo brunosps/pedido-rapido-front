@@ -8,13 +8,12 @@ import Link from "next/link";
 import { FaUsersCog } from "react-icons/fa";
 import { useUsers } from "../../services/hooks/useUsers";
 import employee from "../../components/dtos/employee";
+import withAuth from "../../components/withAuth";
 
 
 
-export default function UserList() {
+function UserList() {
     const { data, isLoading, error, isFetching } = useUsers()
-
-
 
     return (
         <Box>
@@ -125,3 +124,5 @@ export default function UserList() {
         </Box >
     )
 }
+
+export default withAuth(UserList);

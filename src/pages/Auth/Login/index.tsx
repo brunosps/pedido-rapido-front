@@ -27,7 +27,7 @@ export default function Sign() {
     const dispatch = useDispatch();
     const toast = useToast()
 
-    const { register, handleSubmit, formState, errors } = useForm({
+    const { register, handleSubmit, formState } = useForm({
         resolver: yupResolver(signInFormSchema),
     })
 
@@ -36,26 +36,44 @@ export default function Sign() {
         const password = values.password;
 
         try {
-            const auth = await api.post('/auth/v1/employee/sign_in', {
+            api.post('/auth/v1/employee/sign_in', {
                 email,
                 password,
-            })
+            }).then(response => {
 
-            const employee = auth.data.data;
+                if (response.isAxiosError) {
+                    toast({
+                        title: 'E-mail ou senha inválidos!',
+                        description: response.message,
+                        status: "error",
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                } else {
+                    const employee = response.data.data;
 
-            dispatch(setLoggedEmployee(employee));
-            toast({
-                title: "Login realizado com sucesso!",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
+                    dispatch(setLoggedEmployee(employee));
+                    toast({
+                        title: "Login realizado com sucesso!",
+                        status: "success",
+                        duration: 9000,
+                        isClosable: true,
+                    });
+
+                    if (router.query.callback && router.query.callback !== "/") {
+                        router.push(decodeURIComponent(router.query.callback.toString()));
+                    } else {
+                        router.push('/')
+                    }
+                }
+            }).catch(error => {
+                toast({
+                    title: 'E-mail ou senha inválidos!',
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
             });
-
-            if (router.query.callback && router.query.callback !== "/") {
-                router.push(decodeURIComponent(router.query.callback.toString()));
-            } else {
-                router.push('/')
-            }
         } catch (err) {
             toast({
                 title: 'E-mail ou senha inválidos!',
@@ -88,17 +106,15 @@ export default function Sign() {
                 <Stack spacing='4'>
                     <Input
                         type='email'
-                        name='email'
                         label='E-Mail'
-                        error={errors.email}
-                        ref={register}
+                        error={formState.errors.email}
+                        {...register('email')}
                     />
                     <Input
                         type='password'
-                        name='password'
                         label='Senha'
-                        error={errors.password}
-                        ref={register} />
+                        error={formState.errors.password}
+                        {...register('password')} />
                 </Stack>
 
 

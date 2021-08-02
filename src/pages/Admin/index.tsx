@@ -4,6 +4,7 @@ import { Sidebar } from "../../components/Sidebar";
 import { RiAddLine, RiCloseCircleFill } from 'react-icons/ri'
 import { Pagination } from "../../components/Pagination";
 import Link from "next/link";
+import withAuth from "../../components/withAuth";
 
 
 function AdminIndexPage() {
@@ -198,4 +199,4 @@ function AdminIndexPage() {
     )
 }
 
-export default AdminIndexPage;
+export default withAuth(AdminIndexPage, "admin");

@@ -14,13 +14,11 @@ function Home() {
     let employeePath = "/Admin";
     switch (loggedEmployee.occupation) {
       case "waiter": {
-        //statements; 
         employeePath = "/Attendance";
         break;
       }
-      default: {
-        //statements; 
-        let employeePath = "/Kitchen";
+      case "cooker": {
+        employeePath = "/Kitchen";
         break;
       }
     }
@@ -28,7 +26,7 @@ function Home() {
   }
 
   return (
-    <h1>Home {loggedEmployee.email}</h1>
+    <h1>{loggedEmployee?.email}</h1>
   )
 }
 
