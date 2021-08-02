@@ -18,9 +18,8 @@ export default function OrderListItem({ nestIndex, control, register, item, remo
     const [price, setPrice] = useState(item.price);
     const [quantity, setQuantity] = useState(item.quantity);
     const handleChange = (value) => {
-        debugger;
         setQuantity(parseFloat(value.target.value))
-        setPrice(parseFloat(value.target.value) * parseFloat(item.price) * 100)
+        setPrice(parseFloat(value.target.value) * parseFloat(item.price))
     }
 
     return (
