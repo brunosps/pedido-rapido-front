@@ -2,10 +2,23 @@ import { useQuery } from "react-query"
 import employee from "../../components/dtos/employee"
 import api from "../api"
 
+type GetUsersResponse = {
+    total_pages: number,
+    employees: employee[]
+    total: number,
+}
+
+export async function getEmployees(page: number): Promise<GetUsersResponse> {
+    const { data } = await api.get('/admin/v1/employees', {
+        params: {
+            page,
+        }
+    })
+
+    const total_pages = Number(data.meta.total_pages)
+    const total = Number(data.meta.total)
 
 
-export async function getEmployees() {
-    const { data } = await api.get('/admin/v1/employees')
 
     const employees = data.employees.map((employee: employee) => {
         return {
@@ -16,14 +29,16 @@ export async function getEmployees() {
         }
     })
 
-    return employees
+    return { employees, total_pages, total }
 }
 
-export function useUsers() {
+
+export function useUsers(page: number) {
     return (
-        useQuery('Employees', getEmployees,
+        useQuery(['Employees', page], () => getEmployees(page),
             {
                 staleTime: 1000 * 5, // 5 seconds
             })
     )
 }
+

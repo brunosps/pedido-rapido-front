@@ -1,15 +1,15 @@
 import { Box, Flex, Heading, Divider, VStack, SimpleGrid, HStack, Button } from "@chakra-ui/react";
-import { Input } from "../../components/Form/input";
-import { Header } from "../../components/Header";
-import { Sidebar } from "../../components/Sidebar";
+import { Input } from "../../../components/Form/input"
+import { Header } from "../../../components/Header";
+import { Sidebar } from "../../../components/Sidebar";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 import * as yup from 'yup';
-import { Select } from "../../components/Form/select";
+import { Select } from "../../../components/Form/select";
 import { RiCodeFill } from "react-icons/ri";
 import Router from "next/router";
-import api from "../../services/api";
+import api from "../../../services/api";
 
 type CreateUserFormData = {
     name: string;
@@ -41,7 +41,7 @@ export default function CreateUser() {
                 password,
                 password_confirmation,
                 occupation
-            }).then(response => {
+            }).then((response: any) => {
                 console.log(response)
             })
 
