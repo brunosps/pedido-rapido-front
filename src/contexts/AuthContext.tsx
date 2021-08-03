@@ -21,9 +21,10 @@ type AuthProviderProps = {
 export const AuthContext = createContext({} as AuthContextData)
 
 
+
+export function AuthProvider({ children }: AuthProviderProps) {
     const router = useRouter();
     const dispatch = useDispatch();
-    export function AuthProvider({ children }: AuthProviderProps) {
     async function signIn({ email, password }: SignInCredentials) {
         try {
             const auth = await api.post('/auth/v1/employee/sign_in', {

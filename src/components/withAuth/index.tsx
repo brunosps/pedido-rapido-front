@@ -15,19 +15,19 @@ const withAuth = (Component: any) => {
     const apiData: ApiData = getCredential();
 
     if (!loggedEmployee ||
-        !apiData ||
-        !apiData['access-token'] ||
-        apiData['access-token'] === ''
-      ) {
-        router.push({
-          pathname: '/Auth/Login',
-          query: {
-            callback: router.pathname
-          }
-        });
-      }
+      !apiData ||
+      !apiData['access-token'] ||
+      apiData['access-token'] === ''
+    ) {
+      router.push({
+        pathname: '/Auth/Login',
+        query: {
+          callback: router.pathname
+        }
+      });
+    }
 
-      return <Component {...props}/>;
+    return <Component {...props} />;
   }
 
   if (Component.getServerSideProps) {

@@ -2,7 +2,7 @@ export default interface User {
   id: number,
   name: string;
   email: string;
-  profile: string;
+  occupation: string;
   password?: string;
   password_confirmation?: string;
 }

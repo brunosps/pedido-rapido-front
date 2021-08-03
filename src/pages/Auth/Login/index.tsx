@@ -3,8 +3,6 @@ import { Flex, Button, Stack, useToast } from '@chakra-ui/react'
 import { Input } from '../../../components/Form/input'
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useContext } from 'react';
-import { AuthContext } from '../../../contexts/AuthContext';
 import api from '../../../services/api';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
@@ -42,6 +40,7 @@ export default function Sign() {
             })
 
             const employee = auth.data.data;
+
 
             dispatch(setLoggedEmployee(employee));
             toast({
